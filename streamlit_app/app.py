@@ -5,6 +5,8 @@ from streamlit import session_state as state
 from spotify import Spotify
 import random
 import joblib
+import pandas as pd
+from pathlib import Path
 
 def loading():
     rain(
@@ -32,14 +34,15 @@ def main():
         if random_value >= 0.5:
             #객체 생성
             s = Spotify(artist_name,song_title)
-            #변수값 출력
-            print(s.getTrackInfo())
-            print(s.artist)
-            print(s.track)  
+            # print(s.artist)
+            # print(s.track)  
 
             with st.spinner('Wait for it...'):
                 #예측값 받아오기
-                data = [[230666,False,0.676,0.461,1,-6.746,0,0.143,0.0322,1.01e-06,0.358,0.715,87.917,4,0]]
+                data = [[]]
+                data[0] = list(item for item in s.getTrackInfo().iloc[0])
+                data[0].append(0)
+
                 pred = get_predictions(data)
                 time.sleep(5)
             st.success(f"Prediction for Artist: {artist_name}, Track Name: {song_title}, Prediction: {pred}")

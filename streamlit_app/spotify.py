@@ -51,7 +51,10 @@ class Spotify:
         track_features['explicit'] = track_info['explicit']
         cols_to_drop = ['id','track_href','analysis_url','uri','type']
         track_features = track_features.drop(columns = cols_to_drop)
-      
+
+        #model에 맞춰 column 재구성
+        track_features = track_features[['duration_ms','explicit','danceability','energy','key','loudness','mode','speechiness','acousticness','instrumentalness','liveness','valence','tempo','time_signature']]      
+        
         return track_features
 
 
