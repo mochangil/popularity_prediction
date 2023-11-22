@@ -5,8 +5,10 @@ from streamlit import session_state as state
 from spotify import Spotify
 import random
 import joblib
+from category_encoders import OneHotEncoder
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.compose import ColumnTransformer
 import pandas as pd
-from pathlib import Path
 
 def loading():
     rain(
@@ -17,7 +19,8 @@ def loading():
     )
 
 def get_predictions(data):
-    model_path = ''
+    model_path = Path(__file__).parent
+    model_path = model_path/'nonscale_model.pkl'
     model = joblib.load(model_path)
     predictions = model.predict(data)
     return predictions
@@ -32,16 +35,14 @@ def main():
         #난수 생성
         random_value = random.choice([0, 1])
         if random_value >= 0.5:
+            
             #객체 생성
             s = Spotify(artist_name,song_title)
-            # print(s.artist)
-            # print(s.track)  
+            print(s.artist)
+            print(s.track)  
 
             with st.spinner('Wait for it...'):
                 #예측값 받아오기
-                data = [[]]
-                data[0] = list(item for item in s.getTrackInfo().iloc[0])
-                data[0].append(0)
 
                 pred = get_predictions(data)
                 time.sleep(5)
