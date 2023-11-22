@@ -80,7 +80,7 @@ def main():
                 #data = scaling(data)
                 #print(pred)
                 time.sleep(3)
-            st.success(f"Prediction for Artist: {artist_name}, Track Name: {song_title}, Prediction: {pred}")
+            st.success(f"Predicted Popularity Level for {song_title} by {artist_name} is {pred}")
         else:
             loading()
             st.error("Oops! Something went wrong.")
