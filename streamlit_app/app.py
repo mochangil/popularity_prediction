@@ -74,12 +74,11 @@ def main():
             with st.spinner('Wait for it...'):
                 #예측값 받아오기
 
-                data={'acousticness':0.0322,'danceability':0.676,'duration_mins':3.8444333333333334,'energy':0.461,'explicit':False,'instrumentalness':1.01e-06,'loudness':-6.746,'mode':0,'popularity':73,'tempo':87.917,'valence':0.715}
-                data = pd.DataFrame([data])
-                data = preprocessing(data)
+                
                 #data = scaling(data)
                 #data=[[0.645,0.537,5.51555,0.342,1,0,0.266,-13.553,0,1,109.236,0.253]]
-
+                data = s.getTrackInfo()
+                data = preprocessing(data)
                 pred = get_predictions(data)
                 #print(pred)
                 time.sleep(3)
