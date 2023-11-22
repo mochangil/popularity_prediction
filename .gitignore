@@ -3,5 +3,4 @@
 _pycache__/
 *.cache
 *.csv
-*.pkl
 *.txt
