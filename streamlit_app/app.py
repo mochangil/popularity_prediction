@@ -22,12 +22,14 @@ def loading():
 def preprocessing(data):
     #data['mode'] = data['mode'].astype(str)
     #data['explicit'] = data['explicit'].astype(str)
+    '''
     if data.loc[0, 'mode']==0:
         data.loc[0,'mode_0']=1
         data.loc[0,'mode_1']=0
     else:
         data.loc[0,'mode_0']=0
         data.loc[0,'mode_1']=1
+    '''
 
     if data.loc[0,'explicit']==False:
         data.loc[0, 'explicit_False']=1
