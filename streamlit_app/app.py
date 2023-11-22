@@ -40,6 +40,7 @@ def preprocessing(data):
     encoder = OneHotEncoder(use_cat_names = True)
     data = encoder.fit_transform(data)
     data = data.reindex(sorted(data.columns), axis=1)
+    data = data.drop(columns=['duration_ms'])
     #print(data)
     return data
 
@@ -73,13 +74,10 @@ def main():
 
             with st.spinner('Wait for it...'):
                 #예측값 받아오기
-
-                
-                #data = scaling(data)
-                #data=[[0.645,0.537,5.51555,0.342,1,0,0.266,-13.553,0,1,109.236,0.253]]
                 data = s.getTrackInfo()
                 data = preprocessing(data)
                 pred = get_predictions(data)
+                #data = scaling(data)
                 #print(pred)
                 time.sleep(3)
             st.success(f"Prediction for Artist: {artist_name}, Track Name: {song_title}, Prediction: {pred}")
