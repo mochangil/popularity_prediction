@@ -10,10 +10,6 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.compose import ColumnTransformer
 import pandas as pd
 from pathlib import Path
-from requests import get
-import os
-from PIL import Image
-
 
 def loading():
     rain(
@@ -60,15 +56,10 @@ def scaling(data):
 
 def get_predictions(data):
     model_path = Path(__file__).parent
-    model_path = model_path/'final_model.pkl'
+    model_path = model_path/'best_model.pkl'
     model = joblib.load(model_path)
     predictions = model.predict(data)
     return predictions
-
-def download(url, file_name):
-    with open(file_name, "wb") as file:   
-        response = get(url)              
-        file.write(response.content)
 
 def main():
     if st.button("🌊 Rerun"):
@@ -97,16 +88,18 @@ def main():
                 #data = scaling(data)
                 #print(pred)
                 time.sleep(3)
-            if(st.image(s.img)):
+            # if(st.image(s.img)):
+            if(1):
                 if pred == 3:
                     st.success('💻 Predicted Popularity Level : 3 (3/3, popular!)')
                 elif pred == 2:
                     st.success('📺 Predicted Popularity Level : 2 (2/3, well-known)')
                 else :
                     st.success('📺 Predicted Popularity Level : 1 (1/3, unpopular)')
+            st.cache_data.clear()
         else:
             loading()
             st.error("Oops! Something went wrong.")
-
+            st.cache_data.clear()
 if __name__ == "__main__":
     main()
