@@ -38,7 +38,7 @@ def preprocessing(data):
         data.loc[0, 'explicit_False']=0
         data.loc[0, 'explicit_True']=1
 
-    df["duration_mins"] = df["duration_ms"]/60000
+    data["duration_mins"] = data["duration_ms"]/60000
 
     data=data.drop(columns=['mode','explicit','popularity'])
     encoder = OneHotEncoder(use_cat_names = True)
