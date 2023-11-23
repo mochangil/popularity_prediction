@@ -5,14 +5,15 @@ import pandas as pd
 
 class Spotify:
 
-    def __init__(self, artist, track):
+    def __init__(self, artist, track, img):
         self.artist = artist
         self.track = track
+        self.img = img
 
     @st.cache_data
     def getTrackInfo(_self):
         
-        client_credentials_manager = SpotifyClientCredentials(client_id='084ce5e33c774221b1c77d495a78ea70', client_secret='c9fdf6bdc0864e149b4bd447ec28f605')
+        client_credentials_manager = SpotifyClientCredentials(client_id='b23490441d814051a9418a8d8498e2db', client_secret='c1b805f73a9c4f23847edf9263baeb42')
         sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
         artist_name =[]
         track_name = []
@@ -22,6 +23,7 @@ class Spotify:
         track_duration = []
         track_explicit = []
         track_results = []
+        track_img = []
         for i in range(0,50,5):
             track_results = sp.search(q='artist:'+_self.artist, type='track', limit=5, offset=i)
             if(len(track_results)):
@@ -33,18 +35,19 @@ class Spotify:
                     track_popularity.append(t['popularity'])
                     track_duration.append(t['duration_ms'])
                     track_explicit.append(t['explicit'])
+                    track_img.append(t['album']['images'][1]['url'])
+
                     
 
       
-        track_df = pd.DataFrame({'artist_name' : artist_name, 'track_name' : track_name, 'track_id' : track_id, 'track_popularity' : track_popularity, 'artist_id' : artist_id, 'explicit' : track_explicit})
+        track_df = pd.DataFrame({'artist_name' : artist_name, 'track_name' : track_name, 'track_id' : track_id, 'track_popularity' : track_popularity, 'artist_id' : artist_id, 'explicit' : track_explicit, 'album_img_url':track_img})
 
         track_info = pd.DataFrame()
         track_features = pd.DataFrame()
         track_info = track_df[track_df['track_name']==_self.track]
-        
+        _self.img = track_info['album_img_url'][0]
+        # print(_self.img)
         track_features = sp.audio_features(track_info['track_id'])
-        #log
-        print("track_features",track_features)
 
         track_features = pd.DataFrame(track_features)
         track_features['popularity'] = track_info['track_popularity']
@@ -54,7 +57,7 @@ class Spotify:
 
         #model에 맞춰 column 재구성
         # track_features = track_features[['duration_ms','explicit','danceability','energy','key','loudness','mode','speechiness','acousticness','instrumentalness','liveness','valence','tempo','time_signature','popularity']]      
-        track_features = track_features[['duration_ms','explicit','danceability','energy','loudness','mode','instrumentalness','acousticness','valence','tempo','popularity']]      
+        track_features = track_features[['duration_ms','explicit','danceability','energy','loudness','acousticness','valence','tempo','mode','popularity']]      
         # sample default value
         track_features['duration_mins']=[30.01]
         return track_features

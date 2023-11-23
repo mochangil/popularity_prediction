@@ -10,6 +10,10 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.compose import ColumnTransformer
 import pandas as pd
 from pathlib import Path
+from requests import get
+import os
+from PIL import Image
+
 
 def loading():
     rain(
@@ -61,6 +65,11 @@ def get_predictions(data):
     predictions = model.predict(data)
     return predictions
 
+def download(url, file_name):
+    with open(file_name, "wb") as file:   
+        response = get(url)              
+        file.write(response.content)
+
 def main():
     if st.button("🌊 Rerun"):
         st.rerun()
@@ -76,20 +85,25 @@ def main():
         random_value = random.choice([0, 1])
         if random_value >= 0.5:
             #객체 생성
-            s = Spotify(artist_name,song_title)
+            s = Spotify(artist_name,song_title,"1")
             # print(s.artist)
             # print(s.track)  
-
+            print(s.img)
             with st.spinner('Wait for it...'):
                 #예측값 받아오기
                 data = s.getTrackInfo()
-                print(data)
                 data = preprocessing(data)
                 pred = get_predictions(data)
                 #data = scaling(data)
                 #print(pred)
                 time.sleep(3)
-            st.success(f"Predicted Popularity Level for {song_title} by {artist_name} is {pred}")
+            if(st.image(s.img)):
+                if pred == 3:
+                    st.success('💻 Predicted Popularity Level : 3 (3/3, popular!)')
+                elif pred == 2:
+                    st.success('📺 Predicted Popularity Level : 2 (2/3, well-known)')
+                else :
+                    st.success('📺 Predicted Popularity Level : 1 (1/3, unpopular)')
         else:
             loading()
             st.error("Oops! Something went wrong.")
