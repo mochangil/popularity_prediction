@@ -56,12 +56,16 @@ def scaling(data):
 
 def get_predictions(data):
     model_path = Path(__file__).parent
-    model_path = model_path/'nonscale_model.pkl'
+    model_path = model_path/'final_model.pkl'
     model = joblib.load(model_path)
     predictions = model.predict(data)
     return predictions
 
 def main():
+    if st.button("🌊 Rerun"):
+        st.rerun()
+
+    
     st.title("Predict Your Song")
 
     artist_name = st.text_input("🎤 Artist")
@@ -79,6 +83,7 @@ def main():
             with st.spinner('Wait for it...'):
                 #예측값 받아오기
                 data = s.getTrackInfo()
+                print(data)
                 data = preprocessing(data)
                 pred = get_predictions(data)
                 #data = scaling(data)
