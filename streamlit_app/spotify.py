@@ -24,10 +24,11 @@ class Spotify:
         track_explicit = []
         track_results = []
         track_img = []
-        for i in range(0,50,5):
-            track_results = sp.search(q='artist:'+_self.artist, type='track', limit=5, offset=i)
+        for i in range(0,100,50):
+            track_results = sp.search(q='artist:'+_self.artist, type='track', limit=50, offset=i)
             if(len(track_results)):
                 for i, t in enumerate(track_results['tracks']['items']):
+                    print(t['artists'])
                     artist_name.append(t['artists'][0]['name'])
                     artist_id.append(t['artists'][0]['id'])
                     track_name.append(t['name'])
@@ -41,12 +42,15 @@ class Spotify:
 
       
         track_df = pd.DataFrame({'artist_name' : artist_name, 'track_name' : track_name, 'track_id' : track_id, 'track_popularity' : track_popularity, 'artist_id' : artist_id, 'explicit' : track_explicit, 'album_img_url':track_img})
-
+        # print(track_df['track_name'])
         track_info = pd.DataFrame()
         track_features = pd.DataFrame()
         track_info = track_df[track_df['track_name']==_self.track]
-        _self.img = track_info['album_img_url'][0]
-        # print(_self.img)
+        # print("track_info :", len(track_info['album_img_url']))
+        # print("---------------------------------------------")
+        # if(track_info['album_img_url'])
+        _self.img = (list(track_info['album_img_url']))[0]
+        # print("img_url :",_self.img)
         track_features = sp.audio_features(track_info['track_id'])
 
         track_features = pd.DataFrame(track_features)
@@ -54,7 +58,8 @@ class Spotify:
         track_features['explicit'] = track_info['explicit']
         cols_to_drop = ['id','track_href','analysis_url','uri','type']
         track_features = track_features.drop(columns = cols_to_drop)
-
+        print("popularity:",track_features['popularity'])
+        
         #model에 맞춰 column 재구성
         # track_features = track_features[['duration_ms','explicit','danceability','energy','key','loudness','mode','speechiness','acousticness','instrumentalness','liveness','valence','tempo','time_signature','popularity']]      
         track_features = track_features[['duration_ms','explicit','danceability','energy','loudness','acousticness','valence','tempo','mode','popularity']]      

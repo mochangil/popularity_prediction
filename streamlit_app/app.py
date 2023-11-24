@@ -73,33 +73,36 @@ def main():
         
     if st.button("Popularity Prediction"):
         #난수 생성
-        random_value = random.choice([0, 1])
-        if random_value >= 0.5:
-            #객체 생성
-            s = Spotify(artist_name,song_title,"1")
-            # print(s.artist)
-            # print(s.track)  
-            print(s.img)
-            with st.spinner('Wait for it...'):
-                #예측값 받아오기
+        #객체 생성
+        s = Spotify(artist_name,song_title,"1")
+        # print(s.artist)
+        # print(s.track)  
+        print(s.img)
+        with st.spinner('Wait for it...'):
+            #예측값 받아오기
+            try:
                 data = s.getTrackInfo()
                 data = preprocessing(data)
                 pred = get_predictions(data)
-                #data = scaling(data)
-                #print(pred)
-                time.sleep(3)
-            # if(st.image(s.img)):
-            if(1):
-                if pred == 3:
-                    st.success('💻 Predicted Popularity Level : 3 (3/3, popular!)')
-                elif pred == 2:
-                    st.success('📺 Predicted Popularity Level : 2 (2/3, well-known)')
-                else :
-                    st.success('📺 Predicted Popularity Level : 1 (1/3, unpopular)')
-            st.cache_data.clear()
-        else:
-            loading()
-            st.error("Oops! Something went wrong.")
-            st.cache_data.clear()
+                print(pred)
+                try:
+                    st.image(s.img)
+                except:
+                    st.warning("Sorry, no image available")
+
+                if(1):
+                    if pred == 3:
+                        st.success('💻 Predicted Popularity Level : 3 (3/3, popular!)')                
+                    elif pred == 2:
+                        st.success('📺 Predicted Popularity Level : 2 (2/3, well-known)')               
+                    else :
+                        st.success('📺 Predicted Popularity Level : 1 (1/3, unpopular)')
+                    #data = scaling(data)
+                    #print(pred)
+                        time.sleep(3)
+            except:
+                st.warning("Sorry, please try with another song")
+        
+        st.cache_data.clear()        
 if __name__ == "__main__":
     main()
