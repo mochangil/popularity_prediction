@@ -92,11 +92,11 @@ def main():
 
                 if(1):
                     if pred == 3:
-                        st.success('💻 Predicted Popularity Level : 3 (3/3, popular!)')                
+                        st.success('💻 Predicted Popularity Level : 1 (1/1, popular!)')                
                     elif pred == 2:
-                        st.success('📺 Predicted Popularity Level : 2 (2/3, well-known)')               
+                        st.success('💻 Predicted Popularity Level : 1 (1/1, popular!)')               
                     else :
-                        st.success('📺 Predicted Popularity Level : 1 (1/3, unpopular)')
+                        st.success('📺 Predicted Popularity Level : 1 (0/1, unpopular)')
                     #data = scaling(data)
                     #print(pred)
                         time.sleep(3)
