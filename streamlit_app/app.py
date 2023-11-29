@@ -83,6 +83,7 @@ def main():
             try:
                 data = s.getTrackInfo()
                 data = preprocessing(data)
+                print(data)
                 pred = get_predictions(data)
                 print(pred)
                 try:
