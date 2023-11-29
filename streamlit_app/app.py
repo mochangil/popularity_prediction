@@ -10,6 +10,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.compose import ColumnTransformer
 import pandas as pd
 from pathlib import Path
+from sklearn.preprocessing import StandardScaler
 
 def loading():
     rain(
