@@ -91,12 +91,10 @@ def main():
                     st.warning("Sorry, no image available")
 
                 if(1):
-                    if pred == 3:
+                    if pred == 1:
                         st.success('💻 Predicted Popularity Level : 1 (1/1, popular!)')                
-                    elif pred == 2:
-                        st.success('💻 Predicted Popularity Level : 1 (1/1, popular!)')               
                     else :
-                        st.success('📺 Predicted Popularity Level : 1 (0/1, unpopular)')
+                        st.success('📺 Predicted Popularity Level : 0 (0/1, unpopular)')
                     #data = scaling(data)
                     #print(pred)
                         time.sleep(3)

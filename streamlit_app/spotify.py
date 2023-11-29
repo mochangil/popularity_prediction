@@ -28,7 +28,6 @@ class Spotify:
             track_results = sp.search(q='artist:'+_self.artist, type='track', limit=50, offset=i)
             if(len(track_results)):
                 for i, t in enumerate(track_results['tracks']['items']):
-                    print(t['artists'])
                     artist_name.append(t['artists'][0]['name'])
                     artist_id.append(t['artists'][0]['id'])
                     track_name.append(t['name'])
@@ -58,7 +57,7 @@ class Spotify:
         track_features['explicit'] = track_info['explicit']
         cols_to_drop = ['id','track_href','analysis_url','uri','type']
         track_features = track_features.drop(columns = cols_to_drop)
-        print("popularity:",track_features['popularity'])
+        # print("popularity:",track_features['popularity'])
         
         #model에 맞춰 column 재구성
         # track_features = track_features[['duration_ms','explicit','danceability','energy','key','loudness','mode','speechiness','acousticness','instrumentalness','liveness','valence','tempo','time_signature','popularity']]      
