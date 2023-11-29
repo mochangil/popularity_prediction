@@ -18,10 +18,13 @@ def loading():
         falling_speed=5,
         animation_length="infinite",
     )
-
 def preprocessing(data):
     #data['mode'] = data['mode'].astype(str)
     #data['explicit'] = data['explicit'].astype(str)
+
+    scaler = StandardScaler()
+    data[['duration_ms','danceability','energy','loudness','acousticness','valence','tempo']] = \
+        scaler.fit_transform(data[['duration_ms','danceability','energy','loudness','acousticness','valence','tempo']])
     '''
     if data.loc[0, 'mode']==0:
         data.loc[0,'mode_0']=1
@@ -30,19 +33,16 @@ def preprocessing(data):
         data.loc[0,'mode_0']=0
         data.loc[0,'mode_1']=1
     '''
-
     if data.loc[0,'explicit']==False:
-        data.loc[0, 'explicit_False']=1
-        data.loc[0, 'explicit_True']=0
+        data.loc[0, 'Category_False']=1
+        data.loc[0, 'Category_True']=0
     else:
-        data.loc[0, 'explicit_False']=0
-        data.loc[0, 'explicit_True']=1
+        data.loc[0, 'Category_False']=0
+        data.loc[0, 'Category_True']=1
 
-    data["duration_mins"] = data["duration_ms"]/60000
-
-    data=data.drop(columns=['mode','explicit','popularity'])
-    encoder = OneHotEncoder(use_cat_names = True)
-    data = encoder.fit_transform(data)
+    data=data.drop(columns=['explicit'])
+    #encoder = OneHotEncoder(use_cat_names = True)
+    #data = encoder.fit_transform(data)
     data = data.reindex(sorted(data.columns), axis=1)
     data = data.drop(columns=['duration_ms'])
     #print(data)
