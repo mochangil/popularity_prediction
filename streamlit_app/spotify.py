@@ -61,9 +61,9 @@ class Spotify:
         
         #model에 맞춰 column 재구성
         # track_features = track_features[['duration_ms','explicit','danceability','energy','key','loudness','mode','speechiness','acousticness','instrumentalness','liveness','valence','tempo','time_signature','popularity']]      
-        track_features = track_features[['duration_ms','explicit','danceability','energy','loudness','acousticness','valence','tempo']]      
+        track_features = track_features[['duration_ms','explicit','danceability','energy','loudness','acousticness','valence','tempo','popularity']]      
         # sample default value
-        track_features['duration_mins']=[30.01]
+        # track_features['duration_mins']=[30.01]
         return track_features
 
 

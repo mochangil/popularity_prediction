@@ -24,16 +24,8 @@ def preprocessing(data):
     #data['explicit'] = data['explicit'].astype(str)
 
     scaler = StandardScaler()
-    data[['duration_ms','danceability','energy','loudness','acousticness','valence','tempo']] = \
-        scaler.fit_transform(data[['duration_ms','danceability','energy','loudness','acousticness','valence','tempo']])
-    '''
-    if data.loc[0, 'mode']==0:
-        data.loc[0,'mode_0']=1
-        data.loc[0,'mode_1']=0
-    else:
-        data.loc[0,'mode_0']=0
-        data.loc[0,'mode_1']=1
-    '''
+    data[['duration_ms','danceability','energy','loudness','acousticness','valence','tempo']] = scaler.fit_transform(data[['duration_ms','danceability','energy','loudness','acousticness','valence','tempo']])
+    
     if data.loc[0,'explicit']==False:
         data.loc[0, 'Category_False']=1
         data.loc[0, 'Category_True']=0
@@ -41,11 +33,11 @@ def preprocessing(data):
         data.loc[0, 'Category_False']=0
         data.loc[0, 'Category_True']=1
 
-    data=data.drop(columns=['explicit'])
+    data=data.drop(columns=['explicit','popularity'])
     #encoder = OneHotEncoder(use_cat_names = True)
     #data = encoder.fit_transform(data)
     data = data.reindex(sorted(data.columns), axis=1)
-    data = data.drop(columns=['duration_ms'])
+    # data = data.drop(columns=['duration_ms'])
     #print(data)
     return data
 
@@ -57,7 +49,7 @@ def scaling(data):
 
 def get_predictions(data):
     model_path = Path(__file__).parent
-    model_path = model_path/'best_model.pkl'
+    model_path = model_path/'final_model.pkl'
     model = joblib.load(model_path)
     predictions = model.predict(data)
     return predictions
@@ -84,9 +76,11 @@ def main():
             try:
                 data = s.getTrackInfo()
                 data = preprocessing(data)
-                print(data)
+                # print("data : ")
+                # for i in data:
+                #     print(i)
                 pred = get_predictions(data)
-                print(pred)
+                print("pred : ",pred)
                 try:
                     st.image(s.img)
                 except:
